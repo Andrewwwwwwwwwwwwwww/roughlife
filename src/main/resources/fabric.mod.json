@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "roughlife",
+  "version": "${version}",
+  "name": "Rough Life",
+  "description": "An RLCraft-inspired hardcore survival overhaul: thirst, body temperature, bleeding, broken bones, flint-tool early game, and no free health regen. Original code and art.",
+  "authors": [
+    "Andrewwwwwwwwwwwwwww"
+  ],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/roughlife/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "io.github.andrewwwwwwwwwwwwwww.roughlife.RoughLife"
+    ],
+    "client": [
+      "io.github.andrewwwwwwwwwwwwwww.roughlife.client.RoughLifeClient"
+    ]
+  },
+  "mixins": [
+    "roughlife.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~26.2",
+    "java": ">=25",
+    "fabric-api": ">=0.152.1"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:charcoal",
+    "minecraft:paper",
+    "roughlife:plant_fiber"
+  ],
+  "result": {
+    "count": 2,
+    "id": "roughlife:charcoal_filter"
+  }
+}

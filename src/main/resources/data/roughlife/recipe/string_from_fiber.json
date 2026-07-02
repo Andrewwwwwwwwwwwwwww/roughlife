@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "roughlife:plant_fiber",
+    "roughlife:plant_fiber",
+    "roughlife:plant_fiber"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:string"
+  }
+}

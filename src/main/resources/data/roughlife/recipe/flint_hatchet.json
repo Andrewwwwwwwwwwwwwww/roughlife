@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "f": "roughlife:flint_shard",
+    "p": "roughlife:plant_fiber",
+    "s": "minecraft:stick"
+  },
+  "pattern": [
+    "fp",
+    "s "
+  ],
+  "result": {
+    "count": 1,
+    "id": "roughlife:flint_hatchet"
+  }
+}

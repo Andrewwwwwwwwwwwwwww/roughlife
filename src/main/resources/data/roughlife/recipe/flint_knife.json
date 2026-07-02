@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "f": "roughlife:flint_shard",
+    "s": "minecraft:stick"
+  },
+  "pattern": [
+    "f",
+    "s"
+  ],
+  "result": {
+    "count": 1,
+    "id": "roughlife:flint_knife"
+  }
+}

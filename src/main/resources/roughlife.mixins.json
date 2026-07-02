@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "io.github.andrewwwwwwwwwwwwwww.roughlife.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "PlayerDataMixin",
+    "PlayerDigSpeedMixin",
+    "FoodDataMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
