@@ -24,6 +24,7 @@ public final class RLCommands {
                                 "6. Temperature: watch the thermometer. Cold = vanilla freezing (leather armor blocks it, campfires warm you). Heat = heatstroke (shade, water, night).",
                                 "7. Injuries: Bandage stops Bleeding, Splint fixes Fractured Bones from falls.",
                                 "8. Health barely regenerates — food, bandages and beds are your healers.",
+                                "9. The dark is HUNTING you: at night and underground, monsters keep coming. Light and walls are survival, not decoration.",
                         };
                         for (String line : lines) {
                             ctx.getSource().sendSuccess(() -> Component.literal(line), false);

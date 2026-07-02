@@ -218,6 +218,9 @@ public class RoughLife implements ModInitializer {
             if (config.temperatureEnabled) {
                 TemperatureSystem.tick(player);
             }
+            if (config.dangerousWorld && (player.tickCount + player.getUUID().hashCode() % 50) % Math.max(20, config.dangerIntervalTicks) == 0) {
+                DangerSystem.tick(player);
+            }
             if (config.naturalRegen.equals("slow") && player.tickCount % 160 == 0
                     && player.isHurt() && !player.hasEffect(RLEffects.BLEEDING)
                     && player.getFoodData().getFoodLevel() >= 16) {

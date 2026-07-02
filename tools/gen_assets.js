@@ -176,6 +176,36 @@ R("purified_water_bottle", {
   result: { count: 1, id: "roughlife:purified_water_bottle" },
 });
 
+// ---------- recipe-unlock advancements (recipe book visibility) ----------
+const UNLOCKS = {
+  flint_knife: "roughlife:flint_shard",
+  flint_hatchet: "roughlife:flint_shard",
+  string_from_fiber: "roughlife:plant_fiber",
+  bandage: "roughlife:plant_fiber",
+  splint: "roughlife:plant_fiber",
+  canteen: "minecraft:leather",
+  charcoal_filter: "minecraft:charcoal",
+  purified_water_bottle: "roughlife:charcoal_filter",
+  flint_from_rocks: "roughlife:rock",
+};
+for (const [recipe, item] of Object.entries(UNLOCKS)) {
+  json(path.join(RES, "data/roughlife/advancement/recipes", recipe + ".json"), {
+    parent: "minecraft:recipes/root",
+    criteria: {
+      has_item: {
+        conditions: { items: [{ items: item }] },
+        trigger: "minecraft:inventory_changed",
+      },
+      has_the_recipe: {
+        conditions: { recipe: "roughlife:" + recipe },
+        trigger: "minecraft:recipe_unlocked",
+      },
+    },
+    requirements: [["has_the_recipe", "has_item"]],
+    rewards: { recipes: ["roughlife:" + recipe] },
+  });
+}
+
 // ---------- tags ----------
 json(path.join(RES, "data/minecraft/tags/item/axes.json"), {
   replace: false, values: ["roughlife:flint_hatchet"],

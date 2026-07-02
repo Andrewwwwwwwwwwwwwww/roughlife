@@ -24,6 +24,10 @@ public final class RLConfig {
     public int treeFellingMaxLogs = 128;
     public boolean knappingEnabled = true;
     public boolean dirtyWaterSickness = true;
+    /** Extra hostile spawn pressure near players at night and underground. */
+    public boolean dangerousWorld = true;
+    public int dangerMaxNearbyHostiles = 18;
+    public int dangerIntervalTicks = 100;
     /** "vanilla" = untouched, "slow" = slow food-gated regen, "off" = items only. */
     public String naturalRegen = "slow";
     public boolean thirstDamageKills = false;

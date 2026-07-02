@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.3.0 — 2026-07-02
+Danger + discoverability (third playtest feedback).
+
+- NEW: "Dangerous World" — at night and underground, extra hostiles
+  (zombies/skeletons/spiders/creepers, weighted) continuously spawn on dark
+  ground 20-42 blocks from players, capped by nearby-hostile count. Torch-lit
+  areas are safe. Config: `dangerousWorld`, `dangerMaxNearbyHostiles`,
+  `dangerIntervalTicks`.
+- NEW: recipe-book unlock advancements for all 9 recipes — crafting recipes
+  now appear in the vanilla recipe book once you pick up a relevant
+  ingredient (and REI in the pack can browse them all).
+- Guide updated accordingly.
+
 ## 1.2.0 — 2026-07-02
 RLCraft-accuracy pass (second playtest feedback).
 
