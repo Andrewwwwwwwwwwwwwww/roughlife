@@ -25,6 +25,7 @@ public final class RLCommands {
                                 "7. Injuries: Bandage stops Bleeding, Splint fixes Fractured Bones from falls.",
                                 "8. Health barely regenerates — food, bandages and beds are your healers.",
                                 "9. The dark is HUNTING you: at night and underground, monsters keep coming. Light and walls are survival, not decoration.",
+                                "10. If the sky announces a BLOOD MOON, get inside: the horde comes twice as fast, stronger and quicker, until dawn.",
                         };
                         for (String line : lines) {
                             ctx.getSource().sendSuccess(() -> Component.literal(line), false);

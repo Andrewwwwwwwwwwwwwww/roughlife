@@ -28,6 +28,9 @@ public final class RLConfig {
     public boolean dangerousWorld = true;
     public int dangerMaxNearbyHostiles = 18;
     public int dangerIntervalTicks = 100;
+    /** Some nights are blood moons: double spawn pressure, buffed mobs. */
+    public boolean bloodMoonEnabled = true;
+    public double bloodMoonChance = 0.08;
     /** "vanilla" = untouched, "slow" = slow food-gated regen, "off" = items only. */
     public String naturalRegen = "slow";
     public boolean thirstDamageKills = false;

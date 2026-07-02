@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.4.0 — 2026-07-02
+Blood Moons.
+
+- NEW: some nights (8% by default) are Blood Moons — announced with a dark-red
+  title and a distant wither cry. Dangerous World spawns twice as fast with a
+  50% higher hostile cap, and blood-moon mobs get Speed + Strength.
+- Whether a night is a blood moon derives deterministically from the world
+  seed + day number: no saved state, consistent across restarts.
+- Config: `bloodMoonEnabled`, `bloodMoonChance`.
+- (Fabric 26.2 has no Enhanced Celestials port — this is the original stand-in.)
+
 ## 1.3.0 — 2026-07-02
 Danger + discoverability (third playtest feedback).
 

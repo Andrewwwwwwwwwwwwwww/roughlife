@@ -218,8 +218,15 @@ public class RoughLife implements ModInitializer {
             if (config.temperatureEnabled) {
                 TemperatureSystem.tick(player);
             }
-            if (config.dangerousWorld && (player.tickCount + player.getUUID().hashCode() % 50) % Math.max(20, config.dangerIntervalTicks) == 0) {
-                DangerSystem.tick(player);
+            if (config.dangerousWorld) {
+                boolean bloodMoon = BloodMoon.isBloodMoonNight(player.level());
+                if (bloodMoon) {
+                    BloodMoon.announce(player);
+                }
+                int interval = Math.max(20, bloodMoon ? config.dangerIntervalTicks / 2 : config.dangerIntervalTicks);
+                if ((player.tickCount + player.getUUID().hashCode() % 50) % interval == 0) {
+                    DangerSystem.tick(player, bloodMoon);
+                }
             }
             if (config.naturalRegen.equals("slow") && player.tickCount % 160 == 0
                     && player.isHurt() && !player.hasEffect(RLEffects.BLEEDING)

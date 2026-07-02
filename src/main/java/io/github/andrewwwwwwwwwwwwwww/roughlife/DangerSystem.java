@@ -22,7 +22,7 @@ import net.minecraft.world.phys.AABB;
 public final class DangerSystem {
     private DangerSystem() {}
 
-    public static void tick(ServerPlayer player) {
+    public static void tick(ServerPlayer player, boolean bloodMoon) {
         ServerLevel level = player.level();
         if (level.getDifficulty() == Difficulty.PEACEFUL || !level.dimension().equals(Level.OVERWORLD)) {
             return;
@@ -33,6 +33,9 @@ public final class DangerSystem {
             return;
         }
         int cap = Math.max(1, RLConfig.get().dangerMaxNearbyHostiles);
+        if (bloodMoon) {
+            cap += cap / 2;
+        }
         AABB box = new AABB(player.blockPosition()).inflate(48.0, 32.0, 48.0);
         if (level.getEntitiesOfClass(Monster.class, box).size() >= cap) {
             return;
@@ -55,7 +58,7 @@ public final class DangerSystem {
             if (!night && level.getBrightness(LightLayer.SKY, spot) > 0) {
                 continue;
             }
-            spawnWeighted(level, spot, random);
+            spawnWeighted(level, spot, random, bloodMoon);
             return;
         }
     }
@@ -74,7 +77,7 @@ public final class DangerSystem {
         return null;
     }
 
-    private static void spawnWeighted(ServerLevel level, BlockPos pos, RandomSource random) {
+    private static void spawnWeighted(ServerLevel level, BlockPos pos, RandomSource random, boolean bloodMoon) {
         int roll = random.nextInt(10);
         EntityType<? extends Monster> type;
         if (roll < 4) {
@@ -86,6 +89,13 @@ public final class DangerSystem {
         } else {
             type = EntityTypes.CREEPER;
         }
-        type.spawn(level, pos, EntitySpawnReason.NATURAL);
+        Monster mob = type.spawn(level, pos, EntitySpawnReason.NATURAL);
+        if (mob != null && bloodMoon) {
+            int tenMinutes = 20 * 60 * 10;
+            mob.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                    net.minecraft.world.effect.MobEffects.SPEED, tenMinutes, 0, true, false, false));
+            mob.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                    net.minecraft.world.effect.MobEffects.STRENGTH, tenMinutes, 0, true, false, false));
+        }
     }
 }
