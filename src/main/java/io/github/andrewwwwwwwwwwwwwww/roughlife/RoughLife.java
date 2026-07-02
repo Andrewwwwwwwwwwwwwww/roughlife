@@ -48,12 +48,18 @@ public class RoughLife implements ModInitializer {
         ServerTickEvents.END_SERVER_TICK.register(this::onServerTick);
         ServerLivingEntityEvents.AFTER_DAMAGE.register(this::onAfterDamage);
         PlayerBlockBreakEvents.AFTER.register((level, player, pos, state, blockEntity) -> {
+            if (!(level instanceof ServerLevel serverLevel)) {
+                return;
+            }
             // Plant fiber from grass — the early-game string substitute.
-            if (level instanceof ServerLevel serverLevel
-                    && (state.is(Blocks.SHORT_GRASS) || state.is(Blocks.TALL_GRASS) || state.is(Blocks.FERN)
+            if ((state.is(Blocks.SHORT_GRASS) || state.is(Blocks.TALL_GRASS) || state.is(Blocks.FERN)
                         || state.is(Blocks.LARGE_FERN))
                     && serverLevel.getRandom().nextFloat() < 0.30f) {
                 Block.popResource(serverLevel, pos, new ItemStack(RLItems.PLANT_FIBER));
+            }
+            // Sticks from trees: punching leaves knocks loose sticks.
+            if (state.is(BlockTags.LEAVES) && serverLevel.getRandom().nextFloat() < 0.35f) {
+                Block.popResource(serverLevel, pos, new ItemStack(Items.STICK));
             }
         });
         UseBlockCallback.EVENT.register(this::onKnapping);
@@ -61,27 +67,48 @@ public class RoughLife implements ModInitializer {
         LOGGER.info("Rough Life initialized — stay hydrated, stay warm, don't punch trees.");
     }
 
-    /** Right-clicking stone with flint knaps it into a flint shard (with a chance of ruining it). */
+    /**
+     * Early-game ground interactions:
+     * - sneak + right-click dirt/stone/gravel/sand with an empty hand picks up a Rock;
+     * - right-clicking stone while holding flint (60%) or a rock (40%) knaps a flint shard.
+     */
     private InteractionResult onKnapping(net.minecraft.world.entity.player.Player player,
                                          net.minecraft.world.level.Level level,
                                          net.minecraft.world.InteractionHand hand,
                                          net.minecraft.world.phys.BlockHitResult hit) {
-        if (!RLConfig.get().knappingEnabled) {
+        if (!RLConfig.get().knappingEnabled || hand != net.minecraft.world.InteractionHand.MAIN_HAND) {
             return InteractionResult.PASS;
         }
         ItemStack held = player.getItemInHand(hand);
-        if (!held.is(Items.FLINT)) {
+        BlockPos pos = hit.getBlockPos();
+        var state = level.getBlockState(pos);
+
+        // Rock gathering: scrounge the ground with bare hands.
+        if (held.isEmpty() && player.isShiftKeyDown()
+                && (state.is(BlockTags.DIRT) || state.is(BlockTags.BASE_STONE_OVERWORLD)
+                    || state.is(BlockTags.SAND) || state.is(Blocks.GRAVEL))) {
+            if (level instanceof ServerLevel serverLevel) {
+                Block.popResource(serverLevel, pos.relative(hit.getDirection()), new ItemStack(RLItems.ROCK));
+                serverLevel.playSound(null, pos, SoundEvents.GRAVEL_BREAK, SoundSource.BLOCKS, 0.7f, 1.1f);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        // Knapping.
+        boolean flint = held.is(Items.FLINT);
+        boolean rock = held.is(RLItems.ROCK);
+        if (!flint && !rock) {
             return InteractionResult.PASS;
         }
-        BlockPos pos = hit.getBlockPos();
-        if (!level.getBlockState(pos).is(BlockTags.BASE_STONE_OVERWORLD)
-                && !level.getBlockState(pos).is(Blocks.COBBLESTONE)
-                && !level.getBlockState(pos).is(Blocks.STONE_BRICKS)) {
+        if (!state.is(BlockTags.BASE_STONE_OVERWORLD)
+                && !state.is(Blocks.COBBLESTONE)
+                && !state.is(Blocks.STONE_BRICKS)) {
             return InteractionResult.PASS;
         }
         if (level instanceof ServerLevel serverLevel) {
             held.shrink(1);
-            if (serverLevel.getRandom().nextFloat() < 0.60f) {
+            float chance = flint ? 0.60f : 0.40f;
+            if (serverLevel.getRandom().nextFloat() < chance) {
                 Block.popResource(serverLevel, pos.relative(hit.getDirection()), new ItemStack(RLItems.FLINT_SHARD));
                 serverLevel.playSound(null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0f, 0.8f);
             } else {

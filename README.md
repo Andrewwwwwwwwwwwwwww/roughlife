@@ -19,9 +19,10 @@ can't punch trees.
 ### Body temperature (thermometer left of the hotbar)
 - Computed from biome, night/storms, rain, swimming, fire, the Nether, and
   nearby heat blocks (campfires, furnaces, lava, torches). Armor insulates.
-- Freezing causes **Hypothermia** (slow, weak, then freeze damage); overheating
-  causes **Heatstroke** (rapid hunger drain, then burn damage). Warm up by a
-  campfire; cool off in water or shade.
+- Freezing drives the **vanilla freezing system** (frost overlay, shivering,
+  slowdown, then freeze damage) — leather armor blocks it, just like powder
+  snow. Overheating causes **Heatstroke** (rapid hunger drain, then burn
+  damage). Warm up by a campfire; cool off in water or shade.
 
 ### Injuries
 - Melee hits can cause **Bleeding** — damage over time until you use a
@@ -31,10 +32,14 @@ can't punch trees.
 
 ### Flint-age early game
 - **Logs break extremely slowly without an axe** — no tree punching.
-- Right-click stone with **flint** to knap it into **Flint Shards** (60%
-  success). Shard + stick = **Flint Knife**; shard + fiber + stick =
+- **Sneak + right-click** dirt/stone/sand/gravel with an empty hand to gather
+  **Rocks** off the ground; 3 rocks craft into flint (gravel also drops it).
+- Right-click stone holding **flint** (60%) or a **rock** (40%) to knap
+  **Flint Shards**. Shard + stick = **Flint Knife**; shard + fiber + stick =
   **Flint Hatchet**.
-- Breaking grass sometimes drops **Plant Fiber**; 3 fiber = string.
+- Breaking grass sometimes drops **Plant Fiber** (3 = string); punching
+  leaves knocks loose **sticks**.
+- Lost? `/roughlife guide` explains the whole progression in-game.
 
 ### No free regen
 - Vanilla food-based regeneration is replaced with a much slower version

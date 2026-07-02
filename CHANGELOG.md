@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.1.0 — 2026-07-02
+Early-game feel + feedback fixes (first playtest feedback).
+
+- NEW: Rocks — sneak + right-click dirt/stone/sand/gravel with an empty hand
+  to scrounge a Rock off the ground. Rocks knap on stone (40% shard) and
+  3 rocks craft into flint.
+- NEW: punching leaves has a 35% chance to drop sticks ("sticks from trees").
+- NEW: `/roughlife guide` explains the whole progression in-game.
+- CHANGED: cold no longer uses a custom Hypothermia effect — it now drives the
+  vanilla freezing system (frost overlay, shivering, slowdown, freeze damage),
+  so leather armor blocks freezing exactly like powder snow. Hypothermia
+  effect and its (off-center) icon removed.
+- FIXED: heatstroke and grimy-gut effect icons re-centered on the 18x18 canvas.
+
 ## 1.0.0 — 2026-07-02
 Initial release for Minecraft 26.2 (Fabric).
 

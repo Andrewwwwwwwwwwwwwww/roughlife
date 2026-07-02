@@ -111,7 +111,7 @@ function json(file, obj) {
 
 // ---------- item JSONs ----------
 const ITEMS = [
-  "flint_shard", "plant_fiber", "flint_knife", "flint_hatchet",
+  "rock", "flint_shard", "plant_fiber", "flint_knife", "flint_hatchet",
   "bandage", "splint", "canteen", "charcoal_filter", "purified_water_bottle",
 ];
 const HANDHELD = new Set(["flint_knife", "flint_hatchet"]);
@@ -165,6 +165,11 @@ R("charcoal_filter", {
   ingredients: ["minecraft:charcoal", "minecraft:paper", "roughlife:plant_fiber"],
   result: { count: 2, id: "roughlife:charcoal_filter" },
 });
+R("flint_from_rocks", {
+  type: "minecraft:crafting_shapeless", category: "misc",
+  ingredients: ["roughlife:rock", "roughlife:rock", "roughlife:rock"],
+  result: { count: 1, id: "minecraft:flint" },
+});
 R("purified_water_bottle", {
   type: "minecraft:crafting_shapeless", category: "misc",
   ingredients: ["minecraft:potion", "roughlife:charcoal_filter"],
@@ -184,6 +189,26 @@ json(path.join(RES, "data/roughlife/tags/item/repairs_flint_tools.json"), {
 
 // ---------- textures ----------
 const T = (n) => path.join(RES, "assets/roughlife/textures", n);
+
+// rock: rounded gray pebble
+writePng(T("item/rock.png"), 16, 16, art([
+  "................",
+  "................",
+  "................",
+  "................",
+  "......ggg.......",
+  "....ggGGGgg.....",
+  "...gGGLLGGGg....",
+  "...gGLLGGGGg....",
+  "..gGGLGGGGGdg...",
+  "..gGGGGGGGddg...",
+  "..gGGGGGGdddg...",
+  "...gGGGddddg....",
+  "....ggdddgg.....",
+  "......ggg.......",
+  "................",
+  "................",
+], { g: "#4f5158", G: "#7a7d86", L: "#a2a6b0", d: "#5e6169" }).buf);
 
 // flint shard: chipped dark stone triangle
 writePng(T("item/flint_shard.png"), 16, 16, art([
@@ -482,64 +507,46 @@ const fractureIcon = effectIcon([
 ], { w: "#b8ae95", W: "#f2ede2", x: "#e84a2e" });
 writePng(T("mob_effect/fracture.png"), 18, 18, fractureIcon.buf);
 
-const hypoIcon = effectIcon([
-  "..................",
-  "........c.........",
-  "....c...c...c.....",
-  ".....c..c..c......",
-  "......c.c.c.......",
-  ".......ccc........",
-  "..cccccCCCccccc...",
-  ".......ccc........",
-  "......c.c.c.......",
-  ".....c..c..c......",
-  "....c...c...c.....",
-  "........c.........",
-  "........c.........",
-  "..................",
-  "..................",
-  "..................",
-  "..................",
-  "..................",
-], { c: "#9bd8ff", C: "#ffffff" });
-writePng(T("mob_effect/hypothermia.png"), 18, 18, hypoIcon.buf);
+// (No hypothermia icon: cold now uses the vanilla freezing system.)
 
+// heatstroke sun, centered on the 18x18 canvas (center 8.5, 8.5)
 const heatIcon = effectIcon([
   "..................",
-  "........y.........",
-  "...y....y....y....",
-  "....y...y...y.....",
-  ".....yyyyyyy......",
-  "....yyOOOOOyy.....",
-  "..yyyOOOOOOOyyy...",
-  "....yOOOOOOOy.....",
-  "....yOOOOOOOy.....",
-  "..yyyOOOOOOOyyy...",
-  "....yyOOOOOyy.....",
-  ".....yyyyyyy......",
-  "....y...y...y.....",
-  "...y....y....y....",
-  "........y.........",
   "..................",
+  ".........y........",
+  "....y....y....y...",
+  ".....y...y...y....",
+  "......yyyyyyy.....",
+  ".....yyOOOOOyy....",
+  "...yyyOOOOOOOyyy..",
+  ".....yOOOOOOOy....",
+  ".....yOOOOOOOy....",
+  "...yyyOOOOOOOyyy..",
+  ".....yyOOOOOyy....",
+  "......yyyyyyy.....",
+  ".....y...y...y....",
+  "....y....y....y...",
+  ".........y........",
   "..................",
   "..................",
 ], { y: "#e8a53a", O: "#e84a2e" });
 writePng(T("mob_effect/heatstroke.png"), 18, 18, heatIcon.buf);
 
+// grimy gut swirl, centered on the 18x18 canvas
 const gutIcon = effectIcon([
   "..................",
   "..................",
-  ".....gggggg.......",
-  "....gGGGGGGg......",
-  "...gGgggggGGg.....",
-  "...gGgGGGggGg.....",
-  "...gGgGgGGgGg.....",
-  "...gGgGGgGgGg.....",
-  "...gGggGGgGGg.....",
-  "...gGGggggGg......",
-  "....gGGGGGg.......",
-  ".....gggggg.......",
   "..................",
+  "......gggggg......",
+  ".....gGGGGGGg.....",
+  "....gGgggggGGg....",
+  "....gGgGGGggGg....",
+  "....gGgGgGGgGg....",
+  "....gGgGGgGgGg....",
+  "....gGggGGgGGg....",
+  "....gGGggggGg.....",
+  ".....gGGGGGg......",
+  "......gggggg......",
   "..................",
   "..................",
   "..................",

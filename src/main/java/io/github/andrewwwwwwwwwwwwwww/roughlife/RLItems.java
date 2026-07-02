@@ -27,6 +27,9 @@ public final class RLItems {
             BlockTags.INCORRECT_FOR_WOODEN_TOOL, 90, 3.0f, 1.0f, 5,
             TagKey.create(Registries.ITEM, id("repairs_flint_tools")));
 
+    public static final Item ROCK = register("rock", Item::new,
+            new Item.Properties());
+
     public static final Item FLINT_SHARD = register("flint_shard", Item::new,
             new Item.Properties());
 
@@ -71,6 +74,7 @@ public final class RLItems {
             output.accept(CANTEEN);
         });
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register(output -> {
+            output.accept(ROCK);
             output.accept(FLINT_SHARD);
             output.accept(PLANT_FIBER);
             output.accept(CHARCOAL_FILTER);

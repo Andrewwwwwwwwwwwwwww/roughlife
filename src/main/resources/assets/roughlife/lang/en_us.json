@@ -8,9 +8,9 @@
   "item.roughlife.canteen": "Leather Canteen",
   "item.roughlife.charcoal_filter": "Charcoal Filter",
   "item.roughlife.purified_water_bottle": "Purified Water",
+  "item.roughlife.rock": "Rock",
   "effect.roughlife.bleeding": "Bleeding",
   "effect.roughlife.fracture": "Fractured Bone",
-  "effect.roughlife.hypothermia": "Hypothermia",
   "effect.roughlife.heatstroke": "Heatstroke",
   "effect.roughlife.grimy_gut": "Grimy Gut"
 }

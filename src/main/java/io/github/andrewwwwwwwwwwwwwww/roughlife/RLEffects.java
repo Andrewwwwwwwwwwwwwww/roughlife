@@ -82,12 +82,9 @@ public final class RLEffects {
                     .addAttributeModifier(Attributes.ATTACK_SPEED,
                             id("effect.fracture_attack"), -0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
-    public static final Holder<MobEffect> HYPOTHERMIA = register("hypothermia",
-            new MobEffect(MobEffectCategory.HARMFUL, 0x9BD8FF) {}
-                    .addAttributeModifier(Attributes.MOVEMENT_SPEED,
-                            id("effect.hypothermia_speed"), -0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .addAttributeModifier(Attributes.ATTACK_SPEED,
-                            id("effect.hypothermia_attack"), -0.10, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+    // No custom cold effect: freezing drives the vanilla powder-snow system
+    // (ticksFrozen) in TemperatureSystem, which already has visuals, slowdown,
+    // damage, and leather-armor immunity.
 
     public static final Holder<MobEffect> HEATSTROKE = register("heatstroke", new HeatstrokeEffect());
 

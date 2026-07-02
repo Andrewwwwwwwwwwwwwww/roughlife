@@ -12,6 +12,23 @@ public final class RLCommands {
     public static void init() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             dispatcher.register(Commands.literal("roughlife")
+                    .then(Commands.literal("guide").executes(ctx -> {
+                        String[] lines = {
+                                "=== Rough Life: how to survive ===",
+                                "1. Sneak + right-click dirt/stone/sand with an EMPTY hand to gather Rocks.",
+                                "2. Right-click stone holding Flint (60%) or a Rock (40%) to knap Flint Shards. Gravel drops flint; 3 rocks also craft into flint.",
+                                "3. Break grass for Plant Fiber (3 = string); punch leaves for sticks.",
+                                "4. Shard + stick = Flint Knife. Shard + fiber + stick = Flint Hatchet — without an axe, logs break VERY slowly.",
+                                "5. Thirst: craft a Leather Canteen (4 leather, 2 string, bottle) and fill it at water. Raw water can cause Grimy Gut — filter bottles with a Charcoal Filter for Purified Water.",
+                                "6. Temperature: watch the thermometer. Cold = vanilla freezing (leather armor blocks it, campfires warm you). Heat = heatstroke (shade, water, night).",
+                                "7. Injuries: Bandage stops Bleeding, Splint fixes Fractured Bones from falls.",
+                                "8. Health barely regenerates — food, bandages and beds are your healers.",
+                        };
+                        for (String line : lines) {
+                            ctx.getSource().sendSuccess(() -> Component.literal(line), false);
+                        }
+                        return 1;
+                    }))
                     .then(Commands.literal("status").executes(ctx -> {
                         ServerPlayer player = ctx.getSource().getPlayerOrException();
                         RLPlayerData data = (RLPlayerData) player;

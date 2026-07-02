@@ -24,24 +24,21 @@ public final class TemperatureSystem {
     public static final float SEVERE_HEAT = 36.0f;
 
     public static void tick(ServerPlayer player) {
-        if (player.tickCount % 20 != 0) {
-            return;
-        }
         RLPlayerData data = (RLPlayerData) player;
-        ServerLevel level = player.level();
-        BlockPos pos = player.blockPosition();
-
-        float target = computeTarget(player, level, pos);
-        float current = data.roughlife$getTemperature();
-        float step = Math.max(0.05f, Math.abs(target - current) * 0.08f);
-        if (current < target) {
-            current = Math.min(target, current + step);
-        } else {
-            current = Math.max(target, current - step);
+        if (player.tickCount % 20 == 0) {
+            ServerLevel level = player.level();
+            BlockPos pos = player.blockPosition();
+            float target = computeTarget(player, level, pos);
+            float current = data.roughlife$getTemperature();
+            float step = Math.max(0.05f, Math.abs(target - current) * 0.08f);
+            if (current < target) {
+                current = Math.min(target, current + step);
+            } else {
+                current = Math.max(target, current - step);
+            }
+            data.roughlife$setTemperature(current);
         }
-        data.roughlife$setTemperature(current);
-
-        applyEffects(player, level, current);
+        applyEffects(player, data.roughlife$getTemperature());
     }
 
     private static float computeTarget(ServerPlayer player, ServerLevel level, BlockPos pos) {
@@ -107,18 +104,25 @@ public final class TemperatureSystem {
         return best;
     }
 
-    private static void applyEffects(ServerPlayer player, ServerLevel level, float temp) {
+    private static void applyEffects(ServerPlayer player, float temp) {
         if (temp < FREEZING) {
-            int amplifier = temp < SEVERE_COLD ? 1 : 0;
-            player.addEffect(new MobEffectInstance(RLEffects.HYPOTHERMIA, 60, amplifier, true, false, true));
-            if (temp < SEVERE_COLD && player.tickCount % 100 == 0) {
-                player.hurtServer(level, player.damageSources().freeze(), 1.0f);
+            // Drive the vanilla powder-snow freezing system instead of a custom
+            // effect: frost overlay, shivering, slowdown, and freeze damage all
+            // come from vanilla once ticksFrozen builds up. Vanilla thaws 2/tick,
+            // so the net ramp is +1/tick when cold and +3/tick when severe; leather
+            // armor blocks it entirely (canFreeze), same as powder snow.
+            if (player.canFreeze()) {
+                int ramp = temp < SEVERE_COLD ? 5 : 3;
+                int cap = player.getTicksRequiredToFreeze() + 60;
+                player.setTicksFrozen(Math.min(cap, player.getTicksFrozen() + ramp));
             }
         } else if (temp > HOT && !player.hasEffect(net.minecraft.world.effect.MobEffects.FIRE_RESISTANCE)) {
-            int amplifier = temp > SEVERE_HEAT ? 1 : 0;
-            player.addEffect(new MobEffectInstance(RLEffects.HEATSTROKE, 60, amplifier, true, false, true));
+            if (player.tickCount % 40 == 0) {
+                int amplifier = temp > SEVERE_HEAT ? 1 : 0;
+                player.addEffect(new MobEffectInstance(RLEffects.HEATSTROKE, 60, amplifier, true, false, true));
+            }
             if (temp > SEVERE_HEAT && player.tickCount % 100 == 0) {
-                player.hurtServer(level, player.damageSources().hotFloor(), 1.0f);
+                player.hurtServer(player.level(), player.damageSources().hotFloor(), 1.0f);
             }
         }
     }
