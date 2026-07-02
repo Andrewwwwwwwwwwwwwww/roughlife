@@ -31,7 +31,10 @@ can't punch trees.
   **Splint** (sticks + plant fiber).
 
 ### Flint-age early game
-- **Logs break extremely slowly without an axe** — no tree punching.
+- **No tree punching**: bare-handed, logs break slowly and drop **nothing**
+  (the wood just splinters). You need an axe.
+- **Tree felling**: chopping a log with any axe brings down every connected
+  log above the cut (one axe durability per log; sneak to break a single log).
 - **Sneak + right-click** dirt/stone/sand/gravel with an empty hand to gather
   **Rocks** off the ground; 3 rocks craft into flint (gravel also drops it).
 - Right-click stone holding **flint** (60%) or a **rock** (40%) to knap

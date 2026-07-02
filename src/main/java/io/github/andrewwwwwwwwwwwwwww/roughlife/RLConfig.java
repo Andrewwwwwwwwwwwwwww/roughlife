@@ -20,6 +20,8 @@ public final class RLConfig {
     public boolean bleedingEnabled = true;
     public boolean fracturesEnabled = true;
     public boolean slowTreePunching = true;
+    public boolean treeFelling = true;
+    public int treeFellingMaxLogs = 128;
     public boolean knappingEnabled = true;
     public boolean dirtyWaterSickness = true;
     /** "vanilla" = untouched, "slow" = slow food-gated regen, "off" = items only. */

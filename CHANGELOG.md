@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0 — 2026-07-02
+RLCraft-accuracy pass (second playtest feedback).
+
+- CHANGED: punching logs bare-handed now destroys the block with NO drops
+  (previously slow but still dropped wood). Overlay message explains why.
+  Creative mode unaffected.
+- NEW: tree felling — breaking a log with any axe fells every connected log
+  at or above the cut (BFS, default cap 128 logs, one durability per log;
+  sneak to break a single log). Config: `treeFelling`, `treeFellingMaxLogs`.
+- ART: flint shard shrunk — it's a knapped-off chip, not a boulder.
+
 ## 1.1.0 — 2026-07-02
 Early-game feel + feedback fixes (first playtest feedback).
 

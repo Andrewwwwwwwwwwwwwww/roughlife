@@ -210,22 +210,22 @@ writePng(T("item/rock.png"), 16, 16, art([
   "................",
 ], { g: "#4f5158", G: "#7a7d86", L: "#a2a6b0", d: "#5e6169" }).buf);
 
-// flint shard: chipped dark stone triangle
+// flint shard: chipped dark stone triangle (small — it's a knapped-off chip)
 writePng(T("item/flint_shard.png"), 16, 16, art([
   "................",
   "................",
-  "......d.........",
-  ".....ddl........",
-  "....dDdll.......",
-  "....dDDdl.......",
-  "...dDDDddl......",
-  "...dDDdDdll.....",
-  "..dDDdDDDdl.....",
-  "..dDdDDDDddl....",
-  ".ddDDDDdDDdl....",
-  ".dDDdDDDDDddl...",
-  ".ddddddddddddl..",
-  "..lllllllllll...",
+  "................",
+  "................",
+  "................",
+  ".......d........",
+  "......ddl.......",
+  ".....dDdl.......",
+  ".....dDDdl......",
+  "....dDDdDdl.....",
+  "....dDdDDdl.....",
+  "...ddDDDDddl....",
+  "...ddddddddl....",
+  "....lllllll.....",
   "................",
   "................",
 ], { d: "#4a4a52", D: "#2e2e34", l: "#8a8a96" }).buf);

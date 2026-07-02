@@ -47,6 +47,23 @@ public class RoughLife implements ModInitializer {
 
         ServerTickEvents.END_SERVER_TICK.register(this::onServerTick);
         ServerLivingEntityEvents.AFTER_DAMAGE.register(this::onAfterDamage);
+        PlayerBlockBreakEvents.BEFORE.register((level, player, pos, state, blockEntity) -> {
+            // Punching logs bare-handed yields NOTHING: the block is destroyed
+            // without drops. Get an axe.
+            if (RLConfig.get().slowTreePunching && state.is(BlockTags.LOGS)
+                    && !player.getMainHandItem().is(net.minecraft.tags.ItemTags.AXES)
+                    && !player.isCreative()) {
+                if (level instanceof ServerLevel serverLevel) {
+                    serverLevel.removeBlock(pos, false);
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        serverPlayer.sendOverlayMessage(
+                                net.minecraft.network.chat.Component.literal("Without an axe you just splinter the wood..."));
+                    }
+                }
+                return false; // cancel the vanilla break: no loot, no XP
+            }
+            return true;
+        });
         PlayerBlockBreakEvents.AFTER.register((level, player, pos, state, blockEntity) -> {
             if (!(level instanceof ServerLevel serverLevel)) {
                 return;
@@ -61,10 +78,63 @@ public class RoughLife implements ModInitializer {
             if (state.is(BlockTags.LEAVES) && serverLevel.getRandom().nextFloat() < 0.35f) {
                 Block.popResource(serverLevel, pos, new ItemStack(Items.STICK));
             }
+            // Tree felling: chopping a log with an axe brings down every
+            // connected log above it (sneak to break just the one block).
+            if (RLConfig.get().treeFelling && state.is(BlockTags.LOGS)
+                    && player.getMainHandItem().is(net.minecraft.tags.ItemTags.AXES)
+                    && !player.isShiftKeyDown()) {
+                fellTree(serverLevel, pos, player);
+            }
         });
         UseBlockCallback.EVENT.register(this::onKnapping);
 
         LOGGER.info("Rough Life initialized — stay hydrated, stay warm, don't punch trees.");
+    }
+
+    /**
+     * Fells every log connected to the broken one (at or above the cut),
+     * dropping them all and damaging the axe one durability per log.
+     */
+    private void fellTree(ServerLevel level, BlockPos origin, net.minecraft.world.entity.player.Player player) {
+        ItemStack axe = player.getMainHandItem();
+        int max = Math.max(1, RLConfig.get().treeFellingMaxLogs);
+        java.util.ArrayDeque<BlockPos> queue = new java.util.ArrayDeque<>();
+        java.util.HashSet<BlockPos> seen = new java.util.HashSet<>();
+        queue.add(origin);
+        seen.add(origin);
+        int felled = 0;
+        while (!queue.isEmpty() && felled < max) {
+            BlockPos current = queue.poll();
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dy = -1; dy <= 1; dy++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        if (dx == 0 && dy == 0 && dz == 0) {
+                            continue;
+                        }
+                        BlockPos next = current.offset(dx, dy, dz);
+                        // Only fell upward from the cut so a low chop takes the
+                        // whole tree but never tunnels into logs placed below.
+                        if (next.getY() < origin.getY() || !seen.add(next)) {
+                            continue;
+                        }
+                        if (level.getBlockState(next).is(BlockTags.LOGS)) {
+                            queue.add(next);
+                            level.destroyBlock(next, true, player);
+                            felled++;
+                            if (!axe.isEmpty() && axe.isDamageableItem()) {
+                                axe.hurtAndBreak(1, player, net.minecraft.world.entity.EquipmentSlot.MAINHAND);
+                                if (axe.isEmpty()) {
+                                    return; // axe broke mid-tree
+                                }
+                            }
+                            if (felled >= max) {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
