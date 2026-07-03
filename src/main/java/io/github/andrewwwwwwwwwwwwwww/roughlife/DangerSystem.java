@@ -108,17 +108,20 @@ public final class DangerSystem {
         }
         RandomSource random = player.getRandom();
 
-        // The daytime sky has its own predator: razorwings on patrol.
+        // The daytime sky has its own predator: razorwings claiming territory
+        // FAR from the player and high up — a visible, avoidable silhouette
+        // (the RLCraft dragon rule: you see it coming, entering its airspace
+        // is your choice).
         if (random.nextFloat() < 0.12f && level.canSeeSky(player.blockPosition())) {
             double angle = random.nextDouble() * Math.PI * 2.0;
-            double dist = 20.0 + random.nextDouble() * 14.0;
+            double dist = 45.0 + random.nextDouble() * 25.0;
             int x = (int) Math.floor(player.getX() + Math.cos(angle) * dist);
             int z = (int) Math.floor(player.getZ() + Math.sin(angle) * dist);
-            BlockPos sky = new BlockPos(x, player.getBlockY() + 12 + random.nextInt(8), z);
+            BlockPos sky = new BlockPos(x, player.getBlockY() + 16 + random.nextInt(12), z);
             if (level.getBlockState(sky).isAir() && level.getBlockState(sky.above()).isAir()) {
                 io.github.andrewwwwwwwwwwwwwww.roughlife.RLEntities.RAZORWING
                         .spawn(level, sky, EntitySpawnReason.NATURAL);
-                if (random.nextFloat() < 0.4f && level.getBlockState(sky.above(2)).isAir()
+                if (random.nextFloat() < 0.2f && level.getBlockState(sky.above(2)).isAir()
                         && level.getBlockState(sky.above(3)).isAir()) {
                     io.github.andrewwwwwwwwwwwwwww.roughlife.RLEntities.RAZORWING
                             .spawn(level, sky.above(2), EntitySpawnReason.NATURAL);

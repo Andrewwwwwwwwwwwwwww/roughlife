@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.8.5 — 2026-07-02
+Razorwing rework: visible, avoidable, territorial (the dragon rule).
+
+- Razorwings now spawn 45-70 blocks away and 16-28 blocks up — a circling
+  silhouette you can see and route around, not an ambush.
+- They are TERRITORIAL: each claims its spawn point as a roost (saved with
+  the entity) and patrols a 24-block territory at altitude. They only attack
+  players inside that airspace, and disengage the moment you leave it.
+- Lethality tuned: attack 3 -> 2, Bleeding on hit 8s -> 4s, and a 3-second
+  recovery climb between dive passes (a real window to shield, fight, or
+  retreat). Second-of-a-pair spawn chance 40% -> 20%.
+
+## 1.8.4 — 2026-07-02
+Instant respawn scatter.
+
+- The scatter destination hunt now starts THE MOMENT you die: the target
+  chunk generates asynchronously while the death screen is up, so clicking
+  Respawn places you at the new location immediately (previously the
+  main thread synchronously generated far-away chunks after respawn —
+  up to ~20 seconds of standing at world spawn).
+- Ocean/void targets retry elsewhere (still async, up to 6 chunks), with a
+  10-second safety valve that falls back to world spawn with a log warning.
+
 ## 1.8.1 — 2026-07-02
 Mob AI hardening pass (full code review of all custom entities).
 
