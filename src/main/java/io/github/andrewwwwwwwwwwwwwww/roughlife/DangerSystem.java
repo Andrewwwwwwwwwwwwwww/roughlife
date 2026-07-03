@@ -52,14 +52,17 @@ public final class DangerSystem {
             int z = (int) Math.floor(player.getZ() + Math.sin(angle) * dist);
             BlockPos sky = new BlockPos(x, player.getBlockY() + 14 + random.nextInt(8), z);
             if (level.getBlockState(sky).isAir() && level.getBlockState(sky.above()).isAir()) {
+                // The wingman spawns two up only if that air is clear too.
+                BlockPos second = level.getBlockState(sky.above(2)).isAir()
+                        && level.getBlockState(sky.above(3)).isAir() ? sky.above(2) : sky;
                 if (random.nextFloat() < 0.60f) {
                     io.github.andrewwwwwwwwwwwwwww.roughlife.RLEntities.WAILING_SKULL
                             .spawn(level, sky, EntitySpawnReason.NATURAL);
                     io.github.andrewwwwwwwwwwwwwww.roughlife.RLEntities.WAILING_SKULL
-                            .spawn(level, sky.above(2), EntitySpawnReason.NATURAL);
+                            .spawn(level, second, EntitySpawnReason.NATURAL);
                 } else {
                     EntityTypes.PHANTOM.spawn(level, sky, EntitySpawnReason.NATURAL);
-                    EntityTypes.PHANTOM.spawn(level, sky.above(2), EntitySpawnReason.NATURAL);
+                    EntityTypes.PHANTOM.spawn(level, second, EntitySpawnReason.NATURAL);
                 }
                 return;
             }
@@ -115,7 +118,8 @@ public final class DangerSystem {
             if (level.getBlockState(sky).isAir() && level.getBlockState(sky.above()).isAir()) {
                 io.github.andrewwwwwwwwwwwwwww.roughlife.RLEntities.RAZORWING
                         .spawn(level, sky, EntitySpawnReason.NATURAL);
-                if (random.nextFloat() < 0.4f) {
+                if (random.nextFloat() < 0.4f && level.getBlockState(sky.above(2)).isAir()
+                        && level.getBlockState(sky.above(3)).isAir()) {
                     io.github.andrewwwwwwwwwwwwwww.roughlife.RLEntities.RAZORWING
                             .spawn(level, sky.above(2), EntitySpawnReason.NATURAL);
                 }

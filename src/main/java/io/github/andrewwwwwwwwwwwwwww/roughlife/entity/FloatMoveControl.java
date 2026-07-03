@@ -29,6 +29,10 @@ public class FloatMoveControl extends MoveControl {
         double accel = 0.08 * this.getSpeedModifier();
         flyer.setDeltaMovement(flyer.getDeltaMovement().scale(0.85)
                 .add(toTarget.scale(accel / distance)));
+        // Don't buzz against tree trunks and walls forever: climb over.
+        if (flyer.horizontalCollision) {
+            flyer.setDeltaMovement(flyer.getDeltaMovement().add(0.0, 0.06, 0.0));
+        }
         // Face where we're going.
         Vec3 motion = flyer.getDeltaMovement();
         if (motion.horizontalDistanceSqr() > 1.0E-4) {

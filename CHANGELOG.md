@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.8.1 — 2026-07-02
+Mob AI hardening pass (full code review of all custom entities).
+
+- FIXED (critical): Stinger Jellies could drown — as Monster subclasses they
+  ran out of air underwater. They now breathe underwater, obviously.
+- FIXED (visual): Wailing Skull was rotated twice (renderer body-yaw + model
+  part yaw), making it over-spin when turning. Model yaw removed.
+- FIXED: flyers no longer buzz endlessly against tree trunks/walls — the
+  shared flight controller now climbs over obstacles on collision.
+- FIXED: jelly sting cooldown could underflow over very long lifetimes.
+- FIXED: the second mob of a sky pair (skulls/phantoms/razorwings) spawned
+  2 blocks up without an air check and could clip into leaves; it now
+  verifies clearance or shares the leader's spawn point.
+
 ## 1.8.0 — 2026-07-02
 Third custom monster: the Stinger Jelly — the water itself stings.
 

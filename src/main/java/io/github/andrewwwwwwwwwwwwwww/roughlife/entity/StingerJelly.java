@@ -52,6 +52,11 @@ public class StingerJelly extends Monster {
     }
 
     @Override
+    public boolean canBreatheUnderwater() {
+        return true; // it's a jellyfish
+    }
+
+    @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(4, new LoomTowardTargetGoal(this));
         this.goalSelector.addGoal(8, new DriftGoal(this));
@@ -73,7 +78,10 @@ public class StingerJelly extends Monster {
             return;
         }
         // The sting: anything fleshy pressing against the bell gets zapped.
-        if (--this.stingCooldown <= 0 && this.level() instanceof ServerLevel serverLevel) {
+        if (this.stingCooldown > 0) {
+            this.stingCooldown--;
+        }
+        if (this.stingCooldown <= 0 && this.level() instanceof ServerLevel serverLevel) {
             List<Player> touching = serverLevel.getEntitiesOfClass(Player.class,
                     this.getBoundingBox().inflate(0.25));
             for (Player player : touching) {

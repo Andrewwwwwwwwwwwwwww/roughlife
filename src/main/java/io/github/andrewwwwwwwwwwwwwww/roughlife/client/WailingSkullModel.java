@@ -34,7 +34,8 @@ public class WailingSkullModel extends EntityModel<LivingEntityRenderState> {
     @Override
     public void setupAnim(LivingEntityRenderState state) {
         super.setupAnim(state);
+        // Hover bob only — the renderer already applies body yaw to the whole
+        // model, so rotating the part here would double-rotate it.
         this.skull.y = 24.0f + Mth.sin(state.ageInTicks * 0.12f) * 0.8f;
-        this.skull.yRot = state.yRot * ((float) Math.PI / 180.0f);
     }
 }
