@@ -56,10 +56,10 @@ public final class RLItems {
             new Item.Properties().stacksTo(16));
 
     public static final Item PURIFIED_WATER_BOTTLE = register("purified_water_bottle", PurifiedWaterItem::new,
-            new Item.Properties().stacksTo(1).usingConvertsTo(Items.GLASS_BOTTLE));
+            new Item.Properties().stacksTo(16).usingConvertsTo(Items.GLASS_BOTTLE));
 
     public static final Item DIRTY_WATER_BOTTLE = register("dirty_water_bottle", DirtyWaterItem::new,
-            new Item.Properties().stacksTo(1).usingConvertsTo(Items.GLASS_BOTTLE));
+            new Item.Properties().stacksTo(16).usingConvertsTo(Items.GLASS_BOTTLE));
 
     private static Identifier id(String path) {
         return Identifier.fromNamespaceAndPath(RoughLife.MOD_ID, path);

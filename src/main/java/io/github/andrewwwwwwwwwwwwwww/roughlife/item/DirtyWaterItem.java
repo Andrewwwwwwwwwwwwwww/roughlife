@@ -25,9 +25,12 @@ public class DirtyWaterItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if (!level.isClientSide() && entity instanceof Player player && player instanceof RLPlayerData data) {
-            data.roughlife$addThirst(3);
-            if (RLConfig.get().dirtyWaterSickness && level.getRandom().nextFloat() < 0.60f) {
-                player.addEffect(new MobEffectInstance(RLEffects.GRIMY_GUT, 20 * 25, 0));
+            // Real hydration, but it ALWAYS costs you something: a wave of
+            // nausea every time, and a coin-flip of Grimy Gut on top.
+            data.roughlife$addThirst(4);
+            player.addEffect(new MobEffectInstance(net.minecraft.world.effect.MobEffects.NAUSEA, 20 * 10, 0));
+            if (RLConfig.get().dirtyWaterSickness && level.getRandom().nextFloat() < 0.50f) {
+                player.addEffect(new MobEffectInstance(RLEffects.GRIMY_GUT, 20 * 20, 0));
             }
         }
         return super.finishUsingItem(stack, level, entity);

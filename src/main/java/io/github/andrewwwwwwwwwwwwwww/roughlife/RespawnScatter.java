@@ -81,6 +81,16 @@ public final class RespawnScatter {
         int chunkZ = z >> 4;
         TARGETS.put(id, new Target(chunkX, chunkZ,
                 overworld.getChunkSource().getChunkFuture(chunkX, chunkZ, ChunkStatus.FULL, true), attempt));
+        // Pre-generate the whole neighborhood too (fire-and-forget) so the
+        // client isn't stuck on the terrain-loading screen after placement —
+        // the death screen hides most of this work.
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dz = -2; dz <= 2; dz++) {
+                if (dx != 0 || dz != 0) {
+                    overworld.getChunkSource().getChunkFuture(chunkX + dx, chunkZ + dz, ChunkStatus.FULL, true);
+                }
+            }
+        }
     }
 
     /** Called once per server tick from RoughLife. */
