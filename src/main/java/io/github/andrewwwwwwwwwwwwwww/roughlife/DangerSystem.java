@@ -158,10 +158,15 @@ public final class DangerSystem {
             return;
         }
 
-        // Land: a pillager hunting party (2-3, sometimes led by a vindicator).
+        // Land: occasionally a pillager hunting party (2-3, sometimes led by a
+        // vindicator) — rare and spawning FAR out, so you spot them marching
+        // in with time to react instead of materializing on top of you.
+        if (random.nextFloat() >= 0.10f) {
+            return;
+        }
         for (int attempt = 0; attempt < 10; attempt++) {
             double angle = random.nextDouble() * Math.PI * 2.0;
-            double dist = 30.0 + random.nextDouble() * 20.0;
+            double dist = 55.0 + random.nextDouble() * 25.0;
             int x = (int) Math.floor(player.getX() + Math.cos(angle) * dist);
             int z = (int) Math.floor(player.getZ() + Math.sin(angle) * dist);
             BlockPos spot = findSpot(level, x, player.getBlockY(), z);
