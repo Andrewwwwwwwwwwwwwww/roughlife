@@ -82,15 +82,20 @@ public class StingerJelly extends Monster {
             this.stingCooldown--;
         }
         if (this.stingCooldown <= 0 && this.level() instanceof ServerLevel serverLevel) {
-            List<Player> touching = serverLevel.getEntitiesOfClass(Player.class,
-                    this.getBoundingBox().inflate(0.25));
-            for (Player player : touching) {
-                if (player.isCreative() || player.isSpectator()) {
+            // Cheap proximity check against the player list instead of an
+            // entity-section query every tick (matters with big swarms).
+            for (Player player : serverLevel.players()) {
+                if (player.isCreative() || player.isSpectator() || !player.isAlive()) {
                     continue;
                 }
-                if (this.doHurtTarget(serverLevel, player)) {
+                if (player.distanceToSqr(this) > 9.0) {
+                    continue;
+                }
+                if (this.getBoundingBox().inflate(0.25).intersects(player.getBoundingBox())
+                        && this.doHurtTarget(serverLevel, player)) {
                     player.addEffect(new MobEffectInstance(MobEffects.POISON, 20 * 5, 0));
                     this.stingCooldown = 15;
+                    break;
                 }
             }
         }

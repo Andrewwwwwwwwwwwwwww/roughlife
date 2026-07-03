@@ -5,6 +5,8 @@ import io.github.andrewwwwwwwwwwwwwww.roughlife.entity.StingerJelly;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
 public class StingerJellyRenderer extends MobRenderer<StingerJelly, JellyRenderState, StingerJellyModel> {
@@ -27,6 +29,13 @@ public class StingerJellyRenderer extends MobRenderer<StingerJelly, JellyRenderS
     @Override
     public JellyRenderState createRenderState() {
         return new JellyRenderState();
+    }
+
+    @Override
+    protected RenderType getRenderType(JellyRenderState state, boolean visible, boolean invisible, boolean glowing) {
+        // The jelly's texture is semi-transparent; the default cutout render
+        // type discards those pixels and mangles it. Translucent is correct.
+        return RenderTypes.entityTranslucent(this.getTextureLocation(state));
     }
 
     @Override

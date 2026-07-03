@@ -6,6 +6,8 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 
 public class RazorwingRenderer extends MobRenderer<Razorwing, LivingEntityRenderState, RazorwingModel> {
@@ -26,5 +28,11 @@ public class RazorwingRenderer extends MobRenderer<Razorwing, LivingEntityRender
     @Override
     public LivingEntityRenderState createRenderState() {
         return new LivingEntityRenderState();
+    }
+
+    @Override
+    protected RenderType getRenderType(LivingEntityRenderState state, boolean visible, boolean invisible, boolean glowing) {
+        // Insect wings are semi-transparent in the texture — needs translucent.
+        return RenderTypes.entityTranslucent(this.getTextureLocation(state));
     }
 }
