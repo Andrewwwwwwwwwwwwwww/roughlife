@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.6.0 — 2026-07-02
+First custom monster: the Wailing Skull.
+
+- NEW MOB: the **Wailing Skull** — a flying skull that haunts the night sky,
+  drifting over the wilderness and swooping at travelers (bite + peel-away
+  attack pattern, vex shriek on charge). Burns up in sunlight; drops bones.
+- Night-sky danger spawns are now 60% wailing skull pairs / 40% phantom pairs.
+- Entity code, model, and AI are original. The texture is the flying-skull
+  art from BetterNether (Team BetterX), used under its MIT license — full
+  notice in THIRD-PARTY-NOTICES.md.
+
 ## 1.5.1 — 2026-07-02
 Air and sea pressure (no third-party air/sea hostile mods exist on 26.2 yet).
 

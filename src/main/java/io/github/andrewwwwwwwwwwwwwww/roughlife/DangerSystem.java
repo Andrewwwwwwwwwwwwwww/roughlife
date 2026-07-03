@@ -43,8 +43,8 @@ public final class DangerSystem {
 
         RandomSource random = player.getRandom();
 
-        // The night sky is not empty: phantom pairs stalk surface travelers
-        // (no insomnia required — the only air hostile vanilla has).
+        // The night sky is not empty: wailing skulls and phantom pairs stalk
+        // surface travelers (no insomnia required).
         if (night && !underground && random.nextFloat() < 0.12f) {
             double angle = random.nextDouble() * Math.PI * 2.0;
             double dist = 18.0 + random.nextDouble() * 12.0;
@@ -52,8 +52,15 @@ public final class DangerSystem {
             int z = (int) Math.floor(player.getZ() + Math.sin(angle) * dist);
             BlockPos sky = new BlockPos(x, player.getBlockY() + 14 + random.nextInt(8), z);
             if (level.getBlockState(sky).isAir() && level.getBlockState(sky.above()).isAir()) {
-                EntityTypes.PHANTOM.spawn(level, sky, EntitySpawnReason.NATURAL);
-                EntityTypes.PHANTOM.spawn(level, sky.above(2), EntitySpawnReason.NATURAL);
+                if (random.nextFloat() < 0.60f) {
+                    io.github.andrewwwwwwwwwwwwwww.roughlife.RLEntities.WAILING_SKULL
+                            .spawn(level, sky, EntitySpawnReason.NATURAL);
+                    io.github.andrewwwwwwwwwwwwwww.roughlife.RLEntities.WAILING_SKULL
+                            .spawn(level, sky.above(2), EntitySpawnReason.NATURAL);
+                } else {
+                    EntityTypes.PHANTOM.spawn(level, sky, EntitySpawnReason.NATURAL);
+                    EntityTypes.PHANTOM.spawn(level, sky.above(2), EntitySpawnReason.NATURAL);
+                }
                 return;
             }
         }

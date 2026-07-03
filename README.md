@@ -67,4 +67,5 @@ $env:JAVA_HOME="C:\Program Files\Microsoft\jdk-25.0.3.9-hotspot"
 Requires the mod on both server and client (HUD + items).
 
 ## License
-All Rights Reserved — see LICENSE.
+All Rights Reserved — see LICENSE. The Wailing Skull's texture comes from
+BetterNether (Team BetterX, MIT) — see THIRD-PARTY-NOTICES.md.
