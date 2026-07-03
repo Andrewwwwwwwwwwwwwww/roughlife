@@ -1,5 +1,32 @@
 # Changelog
 
+## 1.5.0 — 2026-07-02
+The survival-loop overhaul (fourth playtest feedback).
+
+- WATER ECONOMY REWORK (early game was starved for water):
+  - Vanilla water bottles now restore thirst (+4, 35% Grimy Gut risk) — you
+    can drink from day one with just a glass bottle.
+  - NEW Dirty Water item: common chest loot everywhere (~37% of chests);
+    drinkable in a pinch (+3, 60% sickness) or COOKED into Purified Water in
+    a furnace / campfire / smoker. Purified Water is also rare chest loot.
+- TEMPERATURE FIXES (was too cold, too often):
+  - Shelter matters: under any roof (no sky above) night and rain chill are
+    cancelled and you get a +5 warmth bonus — houses are warm now.
+  - Warmer baseline in cold biomes (12 + biome*10 mapping).
+  - Body temperature reacts ~2x faster, so campfires/torches are felt in
+    seconds (the "delay" reported).
+  - Lanterns now radiate heat (5), torches/soul lights 4, magma 6.
+- RESPAWN SCATTER: without a bed/anchor, every death respawns you at a fresh
+  random wilderness spot (never the same place twice). Config
+  `scatterRespawns`: no-bed (default) / always / off, `scatterRadius`.
+- SLEEP IS EARNED: any hostile within 40 blocks keeps you awake (vanilla is
+  8 — village beds no longer trivialize nights), and you can't sleep
+  parched/starving. Config `sleepHostileRadius`, `sleepNeedsComfort`.
+- DAYTIME DANGER: pillager hunting parties (2-3, sometimes vindicator-led)
+  roam near surface players; drowned rise under anyone crossing open water.
+  Config `dangerDaytime`, `dangerDaytimeIntervalTicks`.
+- `/roughlife guide` updated for all of the above.
+
 ## 1.4.0 — 2026-07-02
 Blood Moons.
 

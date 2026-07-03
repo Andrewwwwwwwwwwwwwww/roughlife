@@ -63,6 +63,75 @@ public final class DangerSystem {
         }
     }
 
+    /**
+     * Daytime is not safe either: pillager packs roam the surface and drowned
+     * shadow anyone crossing open water — RLCraft's "traversal is the danger".
+     */
+    public static void tickDaytime(ServerPlayer player) {
+        ServerLevel level = player.level();
+        if (level.getDifficulty() == Difficulty.PEACEFUL || !level.dimension().equals(Level.OVERWORLD)) {
+            return;
+        }
+        if (level.getSkyDarken() >= 8) {
+            return; // night pressure handles this
+        }
+        int cap = Math.max(1, RLConfig.get().dangerMaxNearbyHostiles / 2);
+        AABB box = new AABB(player.blockPosition()).inflate(56.0, 32.0, 56.0);
+        if (level.getEntitiesOfClass(Monster.class, box).size() >= cap) {
+            return;
+        }
+        RandomSource random = player.getRandom();
+
+        // Open water: drowned rise beneath you.
+        if (player.isInWater() || level.getBlockState(player.blockPosition().below(2)).getFluidState().isSource()) {
+            for (int attempt = 0; attempt < 8; attempt++) {
+                double angle = random.nextDouble() * Math.PI * 2.0;
+                double dist = 10.0 + random.nextDouble() * 14.0;
+                int x = (int) Math.floor(player.getX() + Math.cos(angle) * dist);
+                int z = (int) Math.floor(player.getZ() + Math.sin(angle) * dist);
+                BlockPos spot = findWater(level, x, player.getBlockY(), z);
+                if (spot != null) {
+                    EntityTypes.DROWNED.spawn(level, spot, EntitySpawnReason.NATURAL);
+                    return;
+                }
+            }
+            return;
+        }
+
+        // Land: a pillager hunting party (2-3, sometimes led by a vindicator).
+        for (int attempt = 0; attempt < 10; attempt++) {
+            double angle = random.nextDouble() * Math.PI * 2.0;
+            double dist = 30.0 + random.nextDouble() * 20.0;
+            int x = (int) Math.floor(player.getX() + Math.cos(angle) * dist);
+            int z = (int) Math.floor(player.getZ() + Math.sin(angle) * dist);
+            BlockPos spot = findSpot(level, x, player.getBlockY(), z);
+            if (spot == null || level.getBrightness(LightLayer.SKY, spot) == 0) {
+                continue;
+            }
+            int size = 2 + random.nextInt(2);
+            for (int i = 0; i < size; i++) {
+                if (i == 0 && random.nextFloat() < 0.25f) {
+                    EntityTypes.VINDICATOR.spawn(level, spot, EntitySpawnReason.NATURAL);
+                } else {
+                    EntityTypes.PILLAGER.spawn(level, spot, EntitySpawnReason.NATURAL);
+                }
+            }
+            return;
+        }
+    }
+
+    /** Finds a water block with water below it (room for a drowned) near y. */
+    private static BlockPos findWater(ServerLevel level, int x, int playerY, int z) {
+        for (int dy = 2; dy >= -8; dy--) {
+            BlockPos pos = new BlockPos(x, playerY + dy, z);
+            if (level.getBlockState(pos).getFluidState().isSource()
+                    && level.getBlockState(pos.below()).getFluidState().isSource()) {
+                return pos.below();
+            }
+        }
+        return null;
+    }
+
     /** Finds standable ground (solid below, two air blocks) near the player's y. */
     private static BlockPos findSpot(ServerLevel level, int x, int playerY, int z) {
         for (int dy = 6; dy >= -6; dy--) {

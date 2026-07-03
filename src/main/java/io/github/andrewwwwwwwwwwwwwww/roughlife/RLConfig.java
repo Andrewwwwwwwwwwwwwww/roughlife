@@ -31,6 +31,15 @@ public final class RLConfig {
     /** Some nights are blood moons: double spawn pressure, buffed mobs. */
     public boolean bloodMoonEnabled = true;
     public double bloodMoonChance = 0.08;
+    /** Daytime threats: pillager packs on land, drowned in open water. */
+    public boolean dangerDaytime = true;
+    public int dangerDaytimeIntervalTicks = 300;
+    /** Death scatter: "no-bed" = random respawn unless you have a bed/anchor, "always", "off". */
+    public String scatterRespawns = "no-bed";
+    public int scatterRadius = 4000;
+    /** Sleeping rules: hostiles nearby and an empty stomach/canteen keep you awake. */
+    public int sleepHostileRadius = 40;
+    public boolean sleepNeedsComfort = true;
     /** "vanilla" = untouched, "slow" = slow food-gated regen, "off" = items only. */
     public String naturalRegen = "slow";
     public boolean thirstDamageKills = false;

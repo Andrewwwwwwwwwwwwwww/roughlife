@@ -12,8 +12,16 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 /**
  * Per-player body temperature on a 0..40 scale (20 = comfortable).
- * Recomputed once a second from biome, weather, time, water/fire,
+ * Recomputed once a second from biome, weather, time, shelter, water/fire,
  * nearby heat sources and worn armor; the body value eases toward it.
+ *
+ * How it works, in play terms: the biome sets a base target (plains ~20,
+ * desert ~32, snowy ~12), night and rain pull it down ONLY under open sky —
+ * a roof (any non-sky-visible spot) cancels both and adds a shelter bonus.
+ * Heat blocks within 3 blocks add warmth (campfire/fire strongest, then
+ * furnace, magma, lantern, torch), armor insulates, and swimming chills.
+ * Below 8 the vanilla freezing system ramps up (leather armor blocks it);
+ * above 32 Heatstroke sets in.
  */
 public final class TemperatureSystem {
     private TemperatureSystem() {}
@@ -30,7 +38,9 @@ public final class TemperatureSystem {
             BlockPos pos = player.blockPosition();
             float target = computeTarget(player, level, pos);
             float current = data.roughlife$getTemperature();
-            float step = Math.max(0.05f, Math.abs(target - current) * 0.08f);
+            // Ease quickly enough that stepping to a campfire is felt in
+            // seconds, not minutes.
+            float step = Math.max(0.15f, Math.abs(target - current) * 0.16f);
             if (current < target) {
                 current = Math.min(target, current + step);
             } else {
@@ -43,17 +53,25 @@ public final class TemperatureSystem {
 
     private static float computeTarget(ServerPlayer player, ServerLevel level, BlockPos pos) {
         float target;
+        boolean sheltered = !level.canSeeSky(pos.above());
         if (level.dimension() == net.minecraft.world.level.Level.NETHER) {
             target = 33.0f;
         } else {
             float biomeTemp = level.getBiome(pos).value().getBaseTemperature();
-            target = 10.0f + biomeTemp * 12.5f;
-            if (level.getSkyDarken() >= 8) { // night (or heavy storm) chill
-                target -= 4.0f;
+            target = 12.0f + biomeTemp * 10.0f;
+            if (!sheltered) {
+                if (level.getSkyDarken() >= 8) { // night (or heavy storm) chill
+                    target -= 4.0f;
+                }
+                if (level.isRainingAt(pos)) {
+                    target -= 3.0f;
+                }
             }
-            if (level.isRainingAt(pos)) {
-                target -= 3.0f;
-            }
+        }
+
+        // A roof over your head takes the edge off the cold even without a fire.
+        if (sheltered && target < 18.0f) {
+            target = Math.min(18.0f, target + 5.0f);
         }
 
         if (player.isInWater()) {
@@ -92,10 +110,14 @@ public final class TemperatureSystem {
                 if (state.hasProperty(BlockStateProperties.LIT) && state.getValue(BlockStateProperties.LIT)) {
                     heat = 8.0f;
                 }
-            } else if (state.is(Blocks.TORCH) || state.is(Blocks.WALL_TORCH) || state.is(Blocks.LANTERN)) {
-                heat = 3.0f;
             } else if (state.is(Blocks.MAGMA_BLOCK)) {
                 heat = 6.0f;
+            } else if (state.is(Blocks.LANTERN)) {
+                heat = 5.0f;
+            } else if (state.is(Blocks.TORCH) || state.is(Blocks.WALL_TORCH)
+                    || state.is(Blocks.SOUL_TORCH) || state.is(Blocks.SOUL_WALL_TORCH)
+                    || state.is(Blocks.SOUL_LANTERN)) {
+                heat = 4.0f;
             }
             if (heat > best) {
                 best = heat;

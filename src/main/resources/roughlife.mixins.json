@@ -5,7 +5,8 @@
   "mixins": [
     "PlayerDataMixin",
     "PlayerDigSpeedMixin",
-    "FoodDataMixin"
+    "FoodDataMixin",
+    "ConsumableMixin"
   ],
   "injectors": {
     "defaultRequire": 1

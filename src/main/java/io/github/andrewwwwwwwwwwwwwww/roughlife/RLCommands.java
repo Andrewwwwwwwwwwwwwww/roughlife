@@ -20,11 +20,13 @@ public final class RLCommands {
                                 "3. Break grass for Plant Fiber (3 = string); punch leaves for sticks.",
                                 "4. Shard + stick = Flint Knife. Shard + fiber + stick = Flint Hatchet — punching logs bare-handed destroys them but drops NOTHING.",
                                 "4b. Chopping a log with any axe fells the whole tree (sneak to take a single log).",
-                                "5. Thirst: craft a Leather Canteen (4 leather, 2 string, bottle) and fill it at water. Raw water can cause Grimy Gut — filter bottles with a Charcoal Filter for Purified Water.",
+                                "5. Thirst: drink ANY water bottle (risky), loot Dirty Water from chests and COOK it in a furnace/campfire into Purified Water (safe, big restore), or craft a Leather Canteen (4 leather, 2 string, bottle) to sip on the go. A Charcoal Filter also cleans bottles in the crafting grid.",
                                 "6. Temperature: watch the thermometer. Cold = vanilla freezing (leather armor blocks it, campfires warm you). Heat = heatstroke (shade, water, night).",
                                 "7. Injuries: Bandage stops Bleeding, Splint fixes Fractured Bones from falls.",
                                 "8. Health barely regenerates — food, bandages and beds are your healers.",
                                 "9. The dark is HUNTING you: at night and underground, monsters keep coming. Light and walls are survival, not decoration.",
+                                "10. Daylight isn't safe: pillager packs roam the land and drowned stalk open water. Shelter (a roof!) keeps you warm; hostiles within 40 blocks (or an empty stomach) keep you from sleeping.",
+                                "11. Death scatters you to a strange new place — unless you've claimed a bed.",
                                 "10. If the sky announces a BLOOD MOON, get inside: the horde comes twice as fast, stronger and quicker, until dawn.",
                         };
                         for (String line : lines) {

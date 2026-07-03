@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smoking",
+  "category": "misc",
+  "ingredient": "roughlife:dirty_water_bottle",
+  "result": {
+    "id": "roughlife:purified_water_bottle"
+  },
+  "experience": 0.1,
+  "cookingtime": 100
+}

@@ -113,6 +113,7 @@ function json(file, obj) {
 const ITEMS = [
   "rock", "flint_shard", "plant_fiber", "flint_knife", "flint_hatchet",
   "bandage", "splint", "canteen", "charcoal_filter", "purified_water_bottle",
+  "dirty_water_bottle",
 ];
 const HANDHELD = new Set(["flint_knife", "flint_hatchet"]);
 for (const item of ITEMS) {
@@ -176,6 +177,32 @@ R("purified_water_bottle", {
   result: { count: 1, id: "roughlife:purified_water_bottle" },
 });
 
+// Cooking dirty water clean: furnace, campfire, or smoker.
+R("purified_water_from_smelting", {
+  type: "minecraft:smelting",
+  category: "misc",
+  ingredient: "roughlife:dirty_water_bottle",
+  result: { id: "roughlife:purified_water_bottle" },
+  experience: 0.1,
+  cookingtime: 200,
+});
+R("purified_water_from_campfire", {
+  type: "minecraft:campfire_cooking",
+  category: "misc",
+  ingredient: "roughlife:dirty_water_bottle",
+  result: { id: "roughlife:purified_water_bottle" },
+  experience: 0.1,
+  cookingtime: 600,
+});
+R("purified_water_from_smoking", {
+  type: "minecraft:smoking",
+  category: "misc",
+  ingredient: "roughlife:dirty_water_bottle",
+  result: { id: "roughlife:purified_water_bottle" },
+  experience: 0.1,
+  cookingtime: 100,
+});
+
 // ---------- recipe-unlock advancements (recipe book visibility) ----------
 const UNLOCKS = {
   flint_knife: "roughlife:flint_shard",
@@ -187,6 +214,9 @@ const UNLOCKS = {
   charcoal_filter: "minecraft:charcoal",
   purified_water_bottle: "roughlife:charcoal_filter",
   flint_from_rocks: "roughlife:rock",
+  purified_water_from_smelting: "roughlife:dirty_water_bottle",
+  purified_water_from_campfire: "roughlife:dirty_water_bottle",
+  purified_water_from_smoking: "roughlife:dirty_water_bottle",
 };
 for (const [recipe, item] of Object.entries(UNLOCKS)) {
   json(path.join(RES, "data/roughlife/advancement/recipes", recipe + ".json"), {
@@ -419,6 +449,26 @@ writePng(T("item/purified_water_bottle.png"), 16, 16, art([
   "................",
   "................",
 ], { c: "#b8ae95", g: "#cfe3e8", a: "#3f76e4", A: "#6fa9ff", "*": "#ffffff" }).buf);
+
+// dirty water: murky brown-green bottle with sediment
+writePng(T("item/dirty_water_bottle.png"), 16, 16, art([
+  "................",
+  "......ccc.......",
+  "......gcg.......",
+  "......g.g.......",
+  ".....g...g......",
+  "....g.....g.....",
+  "...g.......g....",
+  "...g.mmmmm.g....",
+  "...gmmMMmmmg....",
+  "...gmMsMMmmg....",
+  "...gmmMMsmmg....",
+  "...gmmmmmmmg....",
+  "....gmmmmmg.....",
+  ".....ggggg......",
+  "................",
+  "................",
+], { c: "#b8ae95", g: "#cfe3e8", m: "#5d6b3a", M: "#77894b", s: "#3f4a28" }).buf);
 
 // gui droplets: full / half / empty, 9x9 each
 const dropFull = art([

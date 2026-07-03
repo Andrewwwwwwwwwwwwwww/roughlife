@@ -42,6 +42,9 @@ public class RoughLife implements ModInitializer {
         RLEffects.init();
         RLItems.init();
         RLCommands.init();
+        RespawnScatter.init();
+        SleepRules.init();
+        WaterLoot.init();
 
         PayloadTypeRegistry.clientboundPlay().register(StatsSyncPayload.TYPE, StatsSyncPayload.CODEC);
 
@@ -226,6 +229,12 @@ public class RoughLife implements ModInitializer {
                 int interval = Math.max(20, bloodMoon ? config.dangerIntervalTicks / 2 : config.dangerIntervalTicks);
                 if ((player.tickCount + player.getUUID().hashCode() % 50) % interval == 0) {
                     DangerSystem.tick(player, bloodMoon);
+                }
+                if (config.dangerDaytime) {
+                    int dayInterval = Math.max(60, config.dangerDaytimeIntervalTicks);
+                    if ((player.tickCount + player.getUUID().hashCode() % 50) % dayInterval == 0) {
+                        DangerSystem.tickDaytime(player);
+                    }
                 }
             }
             if (config.naturalRegen.equals("slow") && player.tickCount % 160 == 0

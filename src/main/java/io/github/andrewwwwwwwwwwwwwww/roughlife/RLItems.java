@@ -2,6 +2,7 @@ package io.github.andrewwwwwwwwwwwwwww.roughlife;
 
 import io.github.andrewwwwwwwwwwwwwww.roughlife.item.BandageItem;
 import io.github.andrewwwwwwwwwwwwwww.roughlife.item.CanteenItem;
+import io.github.andrewwwwwwwwwwwwwww.roughlife.item.DirtyWaterItem;
 import io.github.andrewwwwwwwwwwwwwww.roughlife.item.PurifiedWaterItem;
 import io.github.andrewwwwwwwwwwwwwww.roughlife.item.SplintItem;
 import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
@@ -57,6 +58,9 @@ public final class RLItems {
     public static final Item PURIFIED_WATER_BOTTLE = register("purified_water_bottle", PurifiedWaterItem::new,
             new Item.Properties().stacksTo(1).usingConvertsTo(Items.GLASS_BOTTLE));
 
+    public static final Item DIRTY_WATER_BOTTLE = register("dirty_water_bottle", DirtyWaterItem::new,
+            new Item.Properties().stacksTo(1).usingConvertsTo(Items.GLASS_BOTTLE));
+
     private static Identifier id(String path) {
         return Identifier.fromNamespaceAndPath(RoughLife.MOD_ID, path);
     }
@@ -80,6 +84,7 @@ public final class RLItems {
             output.accept(CHARCOAL_FILTER);
         });
         CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FOOD_AND_DRINKS).register(output -> {
+            output.accept(DIRTY_WATER_BOTTLE);
             output.accept(PURIFIED_WATER_BOTTLE);
             output.accept(BANDAGE);
             output.accept(SPLINT);
