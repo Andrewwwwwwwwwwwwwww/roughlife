@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.1 — 2026-07-02
+Air and sea pressure (no third-party air/sea hostile mods exist on 26.2 yet).
+
+- Night surface travel now draws phantom pairs overhead (~12% per danger
+  tick, no insomnia needed).
+- Open-water danger spawns are now 25% guardians ("sea monster"), 75% drowned.
+
 ## 1.5.0 — 2026-07-02
 The survival-loop overhaul (fourth playtest feedback).
 

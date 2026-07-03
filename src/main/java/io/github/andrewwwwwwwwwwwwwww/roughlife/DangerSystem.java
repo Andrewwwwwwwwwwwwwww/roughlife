@@ -42,6 +42,22 @@ public final class DangerSystem {
         }
 
         RandomSource random = player.getRandom();
+
+        // The night sky is not empty: phantom pairs stalk surface travelers
+        // (no insomnia required — the only air hostile vanilla has).
+        if (night && !underground && random.nextFloat() < 0.12f) {
+            double angle = random.nextDouble() * Math.PI * 2.0;
+            double dist = 18.0 + random.nextDouble() * 12.0;
+            int x = (int) Math.floor(player.getX() + Math.cos(angle) * dist);
+            int z = (int) Math.floor(player.getZ() + Math.sin(angle) * dist);
+            BlockPos sky = new BlockPos(x, player.getBlockY() + 14 + random.nextInt(8), z);
+            if (level.getBlockState(sky).isAir() && level.getBlockState(sky.above()).isAir()) {
+                EntityTypes.PHANTOM.spawn(level, sky, EntitySpawnReason.NATURAL);
+                EntityTypes.PHANTOM.spawn(level, sky.above(2), EntitySpawnReason.NATURAL);
+                return;
+            }
+        }
+
         for (int attempt = 0; attempt < 12; attempt++) {
             double angle = random.nextDouble() * Math.PI * 2.0;
             double dist = 20.0 + random.nextDouble() * 22.0;
@@ -91,7 +107,13 @@ public final class DangerSystem {
                 int z = (int) Math.floor(player.getZ() + Math.sin(angle) * dist);
                 BlockPos spot = findWater(level, x, player.getBlockY(), z);
                 if (spot != null) {
-                    EntityTypes.DROWNED.spawn(level, spot, EntitySpawnReason.NATURAL);
+                    // Mostly drowned; sometimes a guardian — the closest thing
+                    // vanilla has to a sea monster.
+                    if (random.nextFloat() < 0.25f) {
+                        EntityTypes.GUARDIAN.spawn(level, spot, EntitySpawnReason.NATURAL);
+                    } else {
+                        EntityTypes.DROWNED.spawn(level, spot, EntitySpawnReason.NATURAL);
+                    }
                     return;
                 }
             }
