@@ -105,6 +105,24 @@ public final class DangerSystem {
         }
         RandomSource random = player.getRandom();
 
+        // The daytime sky has its own predator: razorwings on patrol.
+        if (random.nextFloat() < 0.12f && level.canSeeSky(player.blockPosition())) {
+            double angle = random.nextDouble() * Math.PI * 2.0;
+            double dist = 20.0 + random.nextDouble() * 14.0;
+            int x = (int) Math.floor(player.getX() + Math.cos(angle) * dist);
+            int z = (int) Math.floor(player.getZ() + Math.sin(angle) * dist);
+            BlockPos sky = new BlockPos(x, player.getBlockY() + 12 + random.nextInt(8), z);
+            if (level.getBlockState(sky).isAir() && level.getBlockState(sky.above()).isAir()) {
+                io.github.andrewwwwwwwwwwwwwww.roughlife.RLEntities.RAZORWING
+                        .spawn(level, sky, EntitySpawnReason.NATURAL);
+                if (random.nextFloat() < 0.4f) {
+                    io.github.andrewwwwwwwwwwwwwww.roughlife.RLEntities.RAZORWING
+                            .spawn(level, sky.above(2), EntitySpawnReason.NATURAL);
+                }
+                return;
+            }
+        }
+
         // Open water: drowned rise beneath you.
         if (player.isInWater() || level.getBlockState(player.blockPosition().below(2)).getFluidState().isSource()) {
             for (int attempt = 0; attempt < 8; attempt++) {

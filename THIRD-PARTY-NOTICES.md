@@ -11,6 +11,18 @@ used and redistributed under the MIT license. The Wailing Skull's entity
 code, model geometry, and AI in Rough Life are original — only the texture
 art is BetterNether's.
 
+## BetterEnd — dragonfly entity texture, sounds, and model layout
+
+`assets/roughlife/textures/entity/razorwing.png` and the three
+`assets/roughlife/sounds/entity/razorwing/buzz_*.ogg` files are the dragonfly
+entity texture and sounds from the mod **BetterEnd**
+(https://modrinth.com/mod/betterend), used and redistributed under the MIT
+license. The Razorwing's model part layout is derived from BetterEnd's
+dragonfly model (MIT); the Razorwing's entity code, AI, and animation code
+in Rough Life are original.
+
+Both BetterNether and BetterEnd are licensed as follows:
+
 MIT License
 
 Copyright (c) 2022 Team BetterX

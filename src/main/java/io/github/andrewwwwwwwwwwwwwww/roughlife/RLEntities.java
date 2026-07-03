@@ -1,5 +1,6 @@
 package io.github.andrewwwwwwwwwwwwwww.roughlife;
 
+import io.github.andrewwwwwwwwwwwwwww.roughlife.entity.Razorwing;
 import io.github.andrewwwwwwwwwwwwwww.roughlife.entity.WailingSkull;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
@@ -24,7 +25,19 @@ public final class RLEntities {
                     .clientTrackingRange(10)
                     .build(WAILING_SKULL_KEY));
 
+    public static final ResourceKey<EntityType<?>> RAZORWING_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(RoughLife.MOD_ID, "razorwing"));
+
+    public static final EntityType<Razorwing> RAZORWING = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE, RAZORWING_KEY,
+            EntityType.Builder.of(Razorwing::new, MobCategory.MONSTER)
+                    .sized(0.9f, 0.5f)
+                    .eyeHeight(0.25f)
+                    .clientTrackingRange(10)
+                    .build(RAZORWING_KEY));
+
     public static void init() {
         FabricDefaultAttributeRegistry.register(WAILING_SKULL, WailingSkull.createAttributes());
+        FabricDefaultAttributeRegistry.register(RAZORWING, Razorwing.createAttributes());
     }
 }

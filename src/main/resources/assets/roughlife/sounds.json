@@ -1,0 +1,10 @@
+{
+  "entity.razorwing.buzz": {
+    "subtitle": "subtitles.roughlife.razorwing_buzz",
+    "sounds": [
+      "roughlife:entity/razorwing/buzz_1",
+      "roughlife:entity/razorwing/buzz_2",
+      "roughlife:entity/razorwing/buzz_3"
+    ]
+  }
+}

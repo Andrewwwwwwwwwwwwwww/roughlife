@@ -85,40 +85,6 @@ public class WailingSkull extends Monster {
         return 0.8f;
     }
 
-    /** Direct-velocity flight, ghast-style: drift toward the wanted point. */
-    static class FloatMoveControl extends MoveControl {
-        private final WailingSkull skull;
-
-        FloatMoveControl(WailingSkull skull) {
-            super(skull);
-            this.skull = skull;
-        }
-
-        @Override
-        public void tick() {
-            if (this.operation != Operation.MOVE_TO) {
-                return;
-            }
-            Vec3 toTarget = new Vec3(this.getWantedX() - skull.getX(),
-                    this.getWantedY() - skull.getY(), this.getWantedZ() - skull.getZ());
-            double distance = toTarget.length();
-            if (distance < 0.4) {
-                this.operation = Operation.WAIT;
-                skull.setDeltaMovement(skull.getDeltaMovement().scale(0.6));
-                return;
-            }
-            double accel = 0.08 * this.getSpeedModifier();
-            skull.setDeltaMovement(skull.getDeltaMovement().scale(0.85)
-                    .add(toTarget.scale(accel / distance)));
-            // Face where we're going.
-            Vec3 motion = skull.getDeltaMovement();
-            if (motion.horizontalDistanceSqr() > 1.0E-4) {
-                skull.setYRot((float) (Math.atan2(motion.z, motion.x) * (180.0 / Math.PI)) - 90.0f);
-                skull.yBodyRot = skull.getYRot();
-            }
-        }
-    }
-
     /** Aimless nighttime drifting when there's no one to hunt. */
     static class RandomDriftGoal extends Goal {
         private final WailingSkull skull;

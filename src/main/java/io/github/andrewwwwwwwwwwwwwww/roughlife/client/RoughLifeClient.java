@@ -24,5 +24,7 @@ public class RoughLifeClient implements ClientModInitializer {
 
         ModelLayerRegistry.registerModelLayer(WailingSkullRenderer.LAYER, WailingSkullModel::createBodyLayer);
         EntityRenderers.register(RLEntities.WAILING_SKULL, WailingSkullRenderer::new);
+        ModelLayerRegistry.registerModelLayer(RazorwingRenderer.LAYER, RazorwingModel::createBodyLayer);
+        EntityRenderers.register(RLEntities.RAZORWING, RazorwingRenderer::new);
     }
 }

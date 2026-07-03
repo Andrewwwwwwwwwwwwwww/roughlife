@@ -42,6 +42,7 @@ public class RoughLife implements ModInitializer {
         RLEffects.init();
         RLItems.init();
         RLEntities.init();
+        RLSounds.init();
         RLCommands.init();
         RespawnScatter.init();
         SleepRules.init();

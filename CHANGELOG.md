@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.7.0 — 2026-07-02
+Second custom monster: the Razorwing — the daytime sky bites back.
+
+- NEW MOB: the **Razorwing** — a giant predatory dragonfly that patrols the
+  daytime sky in ones and twos, dive-bombing travelers in strafing runs;
+  its wing edges cause **Bleeding** on hit. Drops string and the occasional
+  phantom membrane. Buzzes audibly (donor sounds) so you hear it coming.
+- Daytime danger spawns now roll razorwings (~12%) before pillager packs.
+- Model layout, texture, and buzz sounds from BetterEnd (Team BetterX, MIT,
+  see THIRD-PARTY-NOTICES.md); entity code, AI, and animations original.
+- Refactor: shared FloatMoveControl for all Rough Life flyers.
+
 ## 1.6.0 — 2026-07-02
 First custom monster: the Wailing Skull.
 
