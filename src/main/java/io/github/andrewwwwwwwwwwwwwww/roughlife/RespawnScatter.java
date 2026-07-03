@@ -144,7 +144,11 @@ public final class RespawnScatter {
         }
     }
 
-    /** Scans the generated chunk's heightmap for a standable dry column. */
+    /**
+     * Scans the generated chunk's heightmap for a landing column. Waking up
+     * mid-ocean is fine (you surface swimming) — only void and lava columns
+     * are rejected.
+     */
     private static BlockPos findSafeColumn(ServerLevel level, ChunkAccess chunk, int chunkX, int chunkZ) {
         int baseX = chunkX << 4;
         int baseZ = chunkZ << 4;
@@ -154,12 +158,15 @@ public final class RespawnScatter {
             int localX = index & 15;
             int localZ = index >> 4;
             int y = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, localX, localZ);
-            BlockPos ground = new BlockPos(baseX + localX, y - 1, baseZ + localZ);
-            BlockState state = level.getBlockState(ground);
-            if (state.isAir() || !state.getFluidState().isEmpty()) {
-                continue; // void or water/lava — keep scanning
+            BlockPos top = new BlockPos(baseX + localX, y - 1, baseZ + localZ);
+            BlockState state = level.getBlockState(top);
+            if (state.isAir()) {
+                continue; // void column
             }
-            return ground.above();
+            if (!state.getFluidState().isEmpty() && !state.getFluidState().is(net.minecraft.tags.FluidTags.WATER)) {
+                continue; // lava lake — no
+            }
+            return top.above();
         }
         return null;
     }

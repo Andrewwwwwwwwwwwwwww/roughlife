@@ -26,6 +26,9 @@ public final class BloodMoon {
 
     private static long announcedDay = -1;
     private static final Set<UUID> ANNOUNCED = new HashSet<>();
+    /** The day roll is memoized: this runs per player per tick. */
+    private static long rolledDay = Long.MIN_VALUE;
+    private static boolean rolledResult;
 
     public static boolean isBloodMoonNight(ServerLevel level) {
         if (!RLConfig.get().bloodMoonEnabled) {
@@ -37,8 +40,12 @@ public final class BloodMoon {
             return false;
         }
         long day = clock / 24000L;
-        RandomSource roll = RandomSource.create(level.getSeed() ^ (day * 0x9E3779B97F4A7C15L));
-        return roll.nextFloat() < (float) RLConfig.get().bloodMoonChance;
+        if (day != rolledDay) {
+            rolledDay = day;
+            RandomSource roll = RandomSource.create(level.getSeed() ^ (day * 0x9E3779B97F4A7C15L));
+            rolledResult = roll.nextFloat() < (float) RLConfig.get().bloodMoonChance;
+        }
+        return rolledResult;
     }
 
     /** Shows the blood-moon title to each player once per blood-moon night. */

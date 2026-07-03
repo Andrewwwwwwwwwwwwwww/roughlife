@@ -67,7 +67,14 @@ public class Razorwing extends Monster {
             return;
         }
         if (this.anchor == null) {
-            this.anchor = this.blockPosition(); // claim the roost where it spawned
+            // Claim the roost at TERRAIN height under the spawn point — the
+            // spawn itself is high in the air, and anchoring there would have
+            // it patrol ever higher.
+            BlockPos here = this.blockPosition();
+            int ground = this.level().getHeight(
+                    net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    here.getX(), here.getZ());
+            this.anchor = new BlockPos(here.getX(), ground, here.getZ());
         }
         // Drop aggro the moment the intruder leaves the territory.
         LivingEntity target = this.getTarget();
@@ -101,7 +108,9 @@ public class Razorwing extends Monster {
     protected void registerGoals() {
         this.goalSelector.addGoal(4, new DiveAttackGoal(this));
         this.goalSelector.addGoal(8, new PatrolSkyGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        // Territory-gated targeting: players outside the airspace are invisible to it.
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true,
+                (target, serverLevel) -> this.withinTerritory(target)));
     }
 
     @Override

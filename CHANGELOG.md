@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.8.6 — 2026-07-02
+Second full-code audit pass.
+
+- Respawn scatter now accepts ocean landings (you wake up swimming) — only
+  void and lava columns are rejected, so retries are nearly never needed.
+- Razorwing roost now anchors at TERRAIN height under its air spawn point
+  (it previously anchored mid-air, so patrols climbed ever higher).
+- Razorwing targeting uses a territory-gated selector: players outside its
+  airspace are simply invisible to it (no target churn).
+- Blood-moon roll memoized per day (was re-seeding a RandomSource per player
+  per tick).
+- Minor cleanup (unused imports).
+
 ## 1.8.5 — 2026-07-02
 Razorwing rework: visible, avoidable, territorial (the dragon rule).
 

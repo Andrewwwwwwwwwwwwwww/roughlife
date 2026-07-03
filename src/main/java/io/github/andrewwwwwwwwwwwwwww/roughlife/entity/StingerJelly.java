@@ -18,7 +18,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import java.util.EnumSet;
-import java.util.List;
 
 /**
  * A drifting box jellyfish that haunts open water in silent swarms. It
