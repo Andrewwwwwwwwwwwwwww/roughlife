@@ -1,6 +1,7 @@
 package io.github.andrewwwwwwwwwwwwwww.roughlife;
 
 import io.github.andrewwwwwwwwwwwwwww.roughlife.entity.Razorwing;
+import io.github.andrewwwwwwwwwwwwwww.roughlife.entity.StingerJelly;
 import io.github.andrewwwwwwwwwwwwwww.roughlife.entity.WailingSkull;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
@@ -36,8 +37,20 @@ public final class RLEntities {
                     .clientTrackingRange(10)
                     .build(RAZORWING_KEY));
 
+    public static final ResourceKey<EntityType<?>> STINGER_JELLY_KEY = ResourceKey.create(
+            Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(RoughLife.MOD_ID, "stinger_jelly"));
+
+    public static final EntityType<StingerJelly> STINGER_JELLY = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE, STINGER_JELLY_KEY,
+            EntityType.Builder.of(StingerJelly::new, MobCategory.MONSTER)
+                    .sized(0.8f, 0.9f)
+                    .eyeHeight(0.5f)
+                    .clientTrackingRange(10)
+                    .build(STINGER_JELLY_KEY));
+
     public static void init() {
         FabricDefaultAttributeRegistry.register(WAILING_SKULL, WailingSkull.createAttributes());
         FabricDefaultAttributeRegistry.register(RAZORWING, Razorwing.createAttributes());
+        FabricDefaultAttributeRegistry.register(STINGER_JELLY, StingerJelly.createAttributes());
     }
 }

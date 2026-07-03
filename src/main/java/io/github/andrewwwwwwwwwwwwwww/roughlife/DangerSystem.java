@@ -132,10 +132,16 @@ public final class DangerSystem {
                 int z = (int) Math.floor(player.getZ() + Math.sin(angle) * dist);
                 BlockPos spot = findWater(level, x, player.getBlockY(), z);
                 if (spot != null) {
-                    // Mostly drowned; sometimes a guardian — the closest thing
-                    // vanilla has to a sea monster.
-                    if (random.nextFloat() < 0.25f) {
+                    float roll = random.nextFloat();
+                    if (roll < 0.20f) {
                         EntityTypes.GUARDIAN.spawn(level, spot, EntitySpawnReason.NATURAL);
+                    } else if (roll < 0.50f) {
+                        // A silent swarm of stinger jellies drifting your way.
+                        int swarm = 2 + random.nextInt(2);
+                        for (int i = 0; i < swarm; i++) {
+                            io.github.andrewwwwwwwwwwwwwww.roughlife.RLEntities.STINGER_JELLY
+                                    .spawn(level, spot, EntitySpawnReason.NATURAL);
+                        }
                     } else {
                         EntityTypes.DROWNED.spawn(level, spot, EntitySpawnReason.NATURAL);
                     }

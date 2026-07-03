@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.8.0 — 2026-07-02
+Third custom monster: the Stinger Jelly — the water itself stings.
+
+- NEW MOB: the **Stinger Jelly** — a silent box jellyfish that drifts open
+  water in swarms of 2-3, slowly looming toward swimmers. Contact stings
+  (damage + Poison). Two color variants (blue/sulphur). Dries out and dies
+  on land. Drops slime balls and the odd glow ink sac.
+- Open-water danger spawns now roll: 20% guardian, 30% jelly swarm, 50%
+  drowned.
+- Textures and model layout from BetterEnd's cubozoa (Team BetterX, MIT,
+  see THIRD-PARTY-NOTICES.md); entity code, AI, and animations original.
+
 ## 1.7.0 — 2026-07-02
 Second custom monster: the Razorwing — the daytime sky bites back.
 
