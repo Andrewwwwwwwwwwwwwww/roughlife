@@ -212,6 +212,7 @@ public class RoughLife implements ModInitializer {
 
     private void onServerTick(MinecraftServer server) {
         RLConfig config = RLConfig.get();
+        RespawnScatter.flush();
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             if (player.isSpectator() || player.isCreative()) {
                 continue;

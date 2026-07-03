@@ -21,6 +21,9 @@ import java.util.Set;
 public final class RespawnScatter {
     private RespawnScatter() {}
 
+    /** Players whose scatter runs next tick, after every respawn handler. */
+    private static final java.util.List<ServerPlayer> PENDING = new java.util.ArrayList<>();
+
     public static void init() {
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> {
             if (alive) {
@@ -33,8 +36,24 @@ public final class RespawnScatter {
             if (mode.equals("no-bed") && newPlayer.getRespawnConfig() != null) {
                 return; // they earned a fixed spawn
             }
-            scatter(newPlayer);
+            // Defer to the next server tick so no other respawn handler
+            // (e.g., an exact-spawn mod running after us in the same event)
+            // can teleport the player back and silently undo the scatter.
+            PENDING.add(newPlayer);
         });
+    }
+
+    /** Called once per server tick from RoughLife. */
+    public static void flush() {
+        if (PENDING.isEmpty()) {
+            return;
+        }
+        for (ServerPlayer player : PENDING) {
+            if (!player.isRemoved()) {
+                scatter(player);
+            }
+        }
+        PENDING.clear();
     }
 
     private static void scatter(ServerPlayer player) {
@@ -60,7 +79,9 @@ public final class RespawnScatter {
                     player.getYRot(), player.getXRot(), true);
             player.sendSystemMessage(Component.literal(
                     "You wake somewhere unfamiliar... (" + x + ", " + y + ", " + z + ")"));
+            RoughLife.LOGGER.info("Respawn scatter: {} -> {}, {}, {}", player.getName().getString(), x, y, z);
             return;
         }
+        RoughLife.LOGGER.warn("Respawn scatter: no safe spot found for {} after 24 attempts", player.getName().getString());
     }
 }
